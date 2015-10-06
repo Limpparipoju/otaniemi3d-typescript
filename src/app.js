@@ -27,24 +27,15 @@ function lazyLoadPolymerAndElements() {
   window.Polymer.dom = 'shadow';
 
   var elements = [
+    `${bower}/polymer/polymer.html`,
+
     //https://github.com/PolymerElements/iron-icon/issues/19
     `${bower}/iron-icons/iron-icons.html`,
-    /*
-    //Polymer elements
-    `${bower}/paper-drawer-panel/paper-drawer-panel.html`,
-    `${bower}/paper-scroll-header-panel/paper-scroll-header-panel.html`,
-    `${bower}/paper-toolbar/paper-toolbar.html`,
-    `${bower}/paper-icon-button/paper-icon-button.html`,
-    `${bower}/iron-flex-layout/iron-flex-layout.html`,
-    */
-    //Custom elements
-    `${bower}/app-router/app-router.html`,
-    /*
-    //My elements
-    '/elements/manga-list/manga-list.html',
-    '/elements/manga-card/manga-card.html',
-    '/elements/manga-info/manga-info.html'
-    */
+
+    //We only need app-router elements for our index page.
+    //App-router then dynamically loads necessary elements depending
+    //on the current route.
+    `${bower}/app-router/app-router.html`
   ];
 
   elements.forEach(function(elementURL) {

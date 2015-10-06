@@ -96,11 +96,11 @@ gulp.task('bower:dist', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('src/**/*.scss', ['sass']);
-  gulp.watch('src/**/*.js', ['es6']);
-  gulp.watch('src/**/*.html', ['html']);
-  gulp.watch('src/assets/**/*', ['assets']);
-  gulp.watch(['src/*.*', '!src/*.html'], ['root']);
+  gulp.watch('src/**/*.scss', ['sass:build']);
+  gulp.watch('src/**/*.js', ['es6:build']);
+  gulp.watch('src/**/*.html', ['html:build']);
+  gulp.watch('src/assets/**/*', ['assets:build']);
+  gulp.watch(['src/*.*', '!src/*.html'], ['root:build']);
 
   gulp.watch('build/**/*.html').on('change', browserSync.reload);
   gulp.watch('build/**/*.js').on('change', browserSync.reload);
@@ -109,15 +109,13 @@ gulp.task('watch', function() {
 
 gulp.task('deploy', function() {
   return gulp.src('dist/**/*')
-    .pipe(ghPages({
-      remoteUrl: 'git@github.com:mangakissa/mangakissa.github.io.git',
-      branch: 'master'
-    }));
+    .pipe(ghPages());
 });
 
 gulp.task('vulcanize', function() {
-  var mangaBrowser = gulp.src(
-      'dist/elements/manga-browser/manga-browser.html',
+  /*
+  return gulp.src(
+      '',
       {base: './'})
     .pipe(vulcanize({
       stripExcludes: false,
@@ -128,36 +126,7 @@ gulp.task('vulcanize', function() {
     }))
     .pipe(minifyInline())
     .pipe(gulp.dest('.'));
-
-  var mangaEntry = gulp.src(
-      'dist/elements/manga-entry/manga-entry.html',
-      {base: './'})
-    .pipe(vulcanize({
-      stripExcludes: false,
-      stripComments: true,
-      inlineCss: true,
-      inlineScripts: true,
-      excludes: ['dist/bower_components/polymer/polymer.html']
-    }))
-    .pipe(minifyInline())
-    .pipe(gulp.dest('.'));
-
-  var mangaReader = gulp.src(
-      'dist/elements/manga-reader/manga-reader.html',
-      {base: './'})
-    .pipe(vulcanize({
-      stripExcludes: false,
-      stripComments: true,
-      inlineCss: true,
-      inlineScripts: true,
-      excludes: ['dist/bower_components/polymer/polymer.html']
-    }))
-    .pipe(minifyInline())
-    .pipe(gulp.dest('.'));
-
-  return eventStream.concat(
-    mangaBrowser, mangaEntry, mangaReader
-  );
+  */
 });
 
 gulp.task('serve:build', function () {
