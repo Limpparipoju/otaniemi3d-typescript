@@ -1,0 +1,12 @@
+{
+  "name": "Otaniemi3D",
+  "private": true,
+  "dependencies": {
+    "polymer": "~1.1.1",
+    "iron-elements": "PolymerElements/iron-elements#~1.0.3",
+    "paper-elements": "PolymerElements/paper-elements#~1.0.5",
+    "app-router": "~2.6.1",
+    "moment": "~2.10.6",
+    "normalize-css": "normalize.css#~3.0.3"
+  }
+}
