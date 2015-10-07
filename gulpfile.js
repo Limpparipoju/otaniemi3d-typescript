@@ -20,6 +20,11 @@ var rename = require('gulp-rename');
 var eventStream = require('event-stream');
 
 
+function logError (error) {
+  console.log(error.toString());
+  this.emit('end');
+}
+
 gulp.task('clean:build', function(done) {
   del(['build'], done);
 });
@@ -61,6 +66,7 @@ gulp.task('es6:build', function () {
     .pipe(sourcemaps.init())
     .pipe(changed('build'))
     .pipe(babel())
+    .on('error', logError)
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('build'));
 });

@@ -1,0 +1,28 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="map-info-window">
+  <template>
+
+    <div>
+      <h4>
+        [[title]]
+      </h4>
+      <ul>
+        <template is="dom-repeat" items="[[links]]" as="link">
+          <li>
+            <a href$="[[link.url]]">
+              <paper-button>
+                [[link.text]]
+              </paper-button>
+            </a>
+          </li>
+        </template>
+      </ul>
+    </div>
+
+  </template>
+</dom-module>
+
+<script src="map-info-window.js"></script>

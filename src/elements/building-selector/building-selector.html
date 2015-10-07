@@ -1,12 +1,62 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../bower_components/google-map/google-map-marker.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <link rel="import" href="../app-layout/app-layout.html">
 
 <dom-module id="building-selector">
   <template>
 
+    <style>
+      :host /deep/ ul.horizontal {
+        margin: 5px;
+        padding: 0;
+      }
+      :host /deep/ ul.horizontal li {
+        list-style: none;
+        display: inline;
+      }
+    </style>
+
+    <iron-ajax
+      url="../../assets/buildings/buildings.json"
+      handle-as="json"
+      last-response="{{buildings}}"
+      auto>
+    </iron-ajax>
+
     <app-layout>
-      <h1>Building selector</h1>
+      <google-map class="fit"
+          latitude="60.1866142"
+          longitude="24.830513"
+          zoom="16"
+          map-type="terrain"
+          signed-in
+          click-events
+          on-google-map-click="closeInfoWindow">
+
+        <template is="dom-repeat" items="[[buildings]]" as="building">
+          <google-map-marker latitude="[[building.lat]]" longitude="[[building.lng]]">
+            <div>
+              <h4>[[building.name]]</h4>
+              <ul class="horizontal">
+                <template is="dom-repeat" items="[[links]]" as="link">
+                  <li>
+                    <!-- For some reason this link tag and paper-button can't have
+                      any whitespace inside them or else link will render extra dash
+                      next to the button -->
+                    <a href$="[[_createUrl(building.id, link.url)]]"><paper-button raised>[[link.text]]</paper-button></a>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </google-map-marker>
+        </template>
+
+      </google-map>
     </app-layout>
 
   </template>
