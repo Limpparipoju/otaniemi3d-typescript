@@ -8,7 +8,6 @@ var runSequence = require('run-sequence');
 var bump = require('gulp-bump');
 var vulcanize = require('gulp-vulcanize');
 var minifyInline = require('gulp-minify-inline');
-var babel = require('gulp-babel');
 var changed = require('gulp-changed');
 var sourcemaps = require('gulp-sourcemaps');
 var glob = require('glob');
@@ -18,6 +17,9 @@ var ghPages = require('gulp-gh-pages');
 var wrap = require('gulp-wrap');
 var rename = require('gulp-rename');
 var eventStream = require('event-stream');
+var ts = require('gulp-typescript');
+
+var tsProject = ts.createProject('tsconfig.json');
 
 
 function logError (error) {
@@ -26,11 +28,11 @@ function logError (error) {
 }
 
 gulp.task('clean:build', function(done) {
-  del(['build'], done);
+  del(['build/**/*'], done);
 });
 
 gulp.task('clean:dist', function(done) {
-  del(['dist'], done);
+  del(['dist/**/*'], done);
 });
 
 gulp.task('sass:build', function() {
@@ -61,18 +63,14 @@ gulp.task('assets:dist', function() {
     .pipe(gulp.dest('dist/assets'));
 });
 
-gulp.task('es6:build', function () {
-  return gulp.src('src/**/*.js')
-    .pipe(sourcemaps.init())
-    .pipe(changed('build'))
-    .pipe(babel())
-    .on('error', logError)
-    .pipe(sourcemaps.write('.'))
+gulp.task('ts:build', function () {
+  return tsProject.src()
+    .pipe(ts(tsProject)).js
     .pipe(gulp.dest('build'));
 });
-gulp.task('es6:dist', function () {
-  return gulp.src('src/**/*.js')
-    .pipe(babel())
+gulp.task('ts:dist', function () {
+  return tsProject.src()
+    .pipe(ts(tsProject)).js
     .pipe(gulp.dest('dist'));
 });
 
@@ -87,12 +85,12 @@ gulp.task('html:dist', function() {
 });
 
 gulp.task('root:build', function() {
-  return gulp.src(['src/*.*', '!src/*.html'])
+  return gulp.src(['src/*.*', '!src/*{.html,.ts}'])
     .pipe(changed('build'))
     .pipe(gulp.dest('build'));
 });
 gulp.task('root:dist', function() {
-  return gulp.src(['src/*.*', '!src/*.html'])
+  return gulp.src(['src/*.*', '!src/*{.html,.ts}'])
     .pipe(gulp.dest('dist'));
 });
 
@@ -103,7 +101,7 @@ gulp.task('bower:dist', function() {
 
 gulp.task('watch', function() {
   gulp.watch('src/**/*.scss', ['sass:build']);
-  gulp.watch('src/**/*.js', ['es6:build']);
+  gulp.watch('src/**/*.js', ['ts:build']);
   gulp.watch('src/**/*.html', ['html:build']);
   gulp.watch('src/assets/**/*', ['assets:build']);
   gulp.watch(['src/*.*', '!src/*.html'], ['root:build']);
@@ -158,7 +156,7 @@ gulp.task('serve:dist', function () {
 gulp.task('default', function() {
   return runSequence(
     'clean:build',
-    ['sass:build', 'es6:build', 'html:build',
+    ['sass:build', 'ts:build', 'html:build',
       'assets:build', 'root:build'],
     'watch',
     'serve:build'
@@ -168,7 +166,7 @@ gulp.task('default', function() {
 gulp.task('build', function() {
   return runSequence(
     'clean:dist',
-    ['sass:dist', 'es6:dist', 'html:dist',
+    ['sass:dist', 'ts:dist', 'html:dist',
       'assets:dist', 'root:dist', 'bower:dist'],
     'vulcanize'
   );

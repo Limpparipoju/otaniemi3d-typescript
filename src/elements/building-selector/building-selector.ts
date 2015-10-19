@@ -27,7 +27,7 @@ Polymer({
 
   },
 
-  _createUrl(building, url) {
+  _createUrl(building:string, url:string): string {
     return `#/${building}/${url}`;
   }
 });

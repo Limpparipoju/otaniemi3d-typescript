@@ -1,0 +1,27 @@
+{
+    "version": "1.5.1",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "amd",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": false,
+        "emitDecoratorMetadata": true,
+        "sourceMap": true,
+        "outDir": "build",
+        "rootDir": "src"
+    },
+    "filesGlob": [
+        "src/**/*.ts",
+        "type_definitions/*.ts"
+    ],
+    "files": [
+        "src/app.ts",
+        "src/elements/app-layout/app-layout.ts",
+        "src/elements/building-selector/building-selector.ts",
+        "src/elements/map-info-window/map-info-window.ts",
+        "type_definitions/tsd.d.ts",
+        "type_definitions/window.d.ts"
+    ],
+    "exclude": []
+}
