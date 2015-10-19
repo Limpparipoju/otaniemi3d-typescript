@@ -1,0 +1,34 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../app-layout/app-layout.html">
+<link rel="import" href="../floor-plan/floor-plan.html">
+
+<dom-module id="heat-map">
+  <template>
+
+    <style>
+    </style>
+
+    <iron-ajax
+      url="../../assets/buildings/buildings.json"
+      handle-as="json"
+      last-response="{{buildings}}"
+      auto>
+    </iron-ajax>
+
+    <app-layout>
+
+      <floor-plan
+        building="[[_getBuilding(building, buildings)]]"
+        floor="[[_getFloor(floor)]]">
+      </floor-plan>
+
+    </app-layout>
+
+  </template>
+</dom-module>
+
+<script src="heat-map.js"></script>

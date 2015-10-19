@@ -18,7 +18,7 @@
       {"lat": 60.18730008895606, "lng": 24.82100627000599},
       {"lat": 60.18736197682253, "lng": 24.82065011298586}
     ],
-    "floorplans": [
+    "floorPlans": [
       {
         "url": "floorplans/floor1.svg",
         "name": "Floor 1",
@@ -79,7 +79,7 @@
       {"lat": 60.18726248952598, "lng": 24.827049672603604},
       {"lat": 60.18761720005726, "lng": 24.827497601509094}
     ],
-    "floorplans": [
+    "floorPlans": [
       {
         "url": "floorplans/floor1.svg",
         "name": "Floor 1",

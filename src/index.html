@@ -15,6 +15,7 @@
 
     <app-router mode="hash">
       <app-route path="/*" import="elements/building-selector/building-selector.html"></app-route>
+      <app-route path="/:building/heat-map/:floor" import="elements/heat-map/heat-map.html"></app-route>
       <app-route path="*" import="elements/not-found/not-found.html"></app-route>
     </app-router>
 

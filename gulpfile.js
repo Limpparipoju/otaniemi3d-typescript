@@ -65,7 +65,9 @@ gulp.task('assets:dist', function() {
 
 gulp.task('ts:build', function () {
   return tsProject.src()
+    .pipe(sourcemaps.init())
     .pipe(ts(tsProject)).js
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('build'));
 });
 gulp.task('ts:dist', function () {
@@ -101,7 +103,7 @@ gulp.task('bower:dist', function() {
 
 gulp.task('watch', function() {
   gulp.watch('src/**/*.scss', ['sass:build']);
-  gulp.watch('src/**/*.js', ['ts:build']);
+  gulp.watch('src/**/*.ts', ['ts:build']);
   gulp.watch('src/**/*.html', ['html:build']);
   gulp.watch('src/assets/**/*', ['assets:build']);
   gulp.watch(['src/*.*', '!src/*.html'], ['root:build']);

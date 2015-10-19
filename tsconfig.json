@@ -19,7 +19,10 @@
         "src/app.ts",
         "src/elements/app-layout/app-layout.ts",
         "src/elements/building-selector/building-selector.ts",
+        "src/elements/floor-plan/floor-plan.ts",
+        "src/elements/heat-map/heat-map.ts",
         "src/elements/map-info-window/map-info-window.ts",
+        "type_definitions/otaniemi3d.d.ts",
         "type_definitions/tsd.d.ts",
         "type_definitions/window.d.ts"
     ],
