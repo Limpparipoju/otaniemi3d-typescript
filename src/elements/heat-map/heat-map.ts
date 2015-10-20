@@ -3,20 +3,26 @@ Polymer({
 
   properties: {
     building: String,
+    buildings: Array,
     floor: String,
-    floorPlan: Object
+    floorPlan: {
+      type: Object,
+      computed: '_getFloorPlan(building, floor, buildings)'
+    }
   },
 
-  _getBuilding(building: string, buildings: Building[]): Building {
+  _getFloorPlan(building: string,
+                floor: string,
+                buildings: Building[]) {
+
     for (let i = 0; i < buildings.length; i++) {
       if (buildings[i].id === building) {
-        return buildings[i];
+        for (let j = 0; j < buildings[i].floorPlans.length; j++) {
+          if (buildings[i].floorPlans[j].floor === Number(floor)) {
+            return buildings[i].floorPlans[j];
+          }
+        }
       }
     }
-    return null;
-  },
-
-  _getFloor(floor: string): number {
-    return Number(floor);
   }
 });

@@ -2,16 +2,17 @@ interface FloorPlan {
   url: string,
   name: string,
   floor: number,
-  svg: Element,
-  data: number[],
-  translate: [number, number],
-  scale: number
+  svg?: Element,
+  data?: number[],
+  translate?: [number, number],
+  scale?: number
 }
 
 interface Room {
   id: string,
   name: string,
-  floor: number
+  floor: number,
+  rooms: Room[]
 }
 
 interface Building {
@@ -21,5 +22,4 @@ interface Building {
   lng: number,
   coords: number[],
   floorPlans: FloorPlan[],
-  rooms: Room[]
 }

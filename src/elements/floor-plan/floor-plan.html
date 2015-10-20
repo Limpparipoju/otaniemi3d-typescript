@@ -7,9 +7,16 @@
   <template>
 
     <style>
+      :host {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
     </style>
 
-    <p>[[building.name]]</p>
+    <object id="floorPlan" type="image/svg+xml" data="[[data.url]]">
+      Your browser does not support SVG
+    </object>
 
   </template>
 </dom-module>
