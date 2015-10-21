@@ -13,7 +13,7 @@ Polymer({
 
   _getFloorPlan(building: string,
                 floor: string,
-                buildings: Building[]) {
+                buildings: Building[]): FloorPlan {
 
     for (let i = 0; i < buildings.length; i++) {
       if (buildings[i].id === building) {
