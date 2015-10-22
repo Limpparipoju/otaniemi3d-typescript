@@ -4,13 +4,17 @@ Polymer({
   properties: {
   },
 
-  send(request: string, method?: string, params?: any): Promise<OmiObject[]> {
+  send(method: string, request: string, params?: any): Promise<OmiObject[]> {
     let ironRequest: any = document.createElement('iron-request');
 
     let requestOptions = {
       url: 'https://otaniemi3d.cs.hut.fi/omi/node/',
       method: 'POST',
-      body: this._createOmiRequest(request, method, params)
+      body: this._createOmiRequest(request, method, params),
+      handleAs: 'xml',
+      headers: {
+        'Content-Type': 'text/xml'
+      }
     };
 
     this.fire('omi-request', {
@@ -19,23 +23,23 @@ Polymer({
     }, {bubbles: false});
 
     return new Promise((resolve, reject) => {
-      ironRequest.send(requestOptions)
-        .then((data) => {
-          resolve(this._parse(data));
+      var a = ironRequest.send(requestOptions)
+        .then((result) => {
+          resolve(this._parse(result.response));
         }, (error) => {
           reject(error);
         });
     });
   },
 
-  _parse() {
-
+  _parse(data) {
+    console.log(data);
   },
 
-  _createOmiRequest(request: string, method: string, params: any): string {
+  _createOmiRequest(request: string, method: string, params: any = {}): string {
     //Because 'ttl' is located in a different place in request XML we
     //store it in a different variable.
-    let ttl = '';
+    let ttl = '0';
     if ('ttl' in Object.keys(params)) {
       ttl = params.ttl;
       delete params.ttl;
@@ -50,8 +54,9 @@ Polymer({
 
     return (
       `<?xml version="1.0"?>
-      <omi:omiEnvelope xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns:omi="omi.xsd" version="1.0" ${ttl}>
-        <omi:${method.toLowerCase()} msgformat="odf" ${parseParams(params)}>
+      <omi:omiEnvelope xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:omi="omi.xsd" version="1.0" ttl="${ttl}">
+        <omi:${method.toLowerCase()} msgformat="odf"${parseParams(params)}>
           <omi:msg>
             <Objects xmlns="odf.xsd">
               ${request}

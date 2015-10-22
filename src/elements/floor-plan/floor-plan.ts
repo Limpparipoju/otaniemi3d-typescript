@@ -6,7 +6,24 @@ Polymer({
   },
 
   ready() {
-
+    let request: any = document.createElement('omi-message');
+    request.send('read', `
+      <Object>
+        <id>K1</id>
+        <Object>
+          <id>Room-147a</id>
+          <InfoItem name="00:0F:C9:0D:11:34">
+            <MetaData/>
+          </InfoItem>
+          <InfoItem name="light">
+            <MetaData/>
+          </InfoItem>
+          <InfoItem name="00:0F:C9:0D:21:42">
+            <MetaData/>
+          </InfoItem>
+        </Object>
+      </Object>`
+    );
   },
 
   _getFloorPlan(floorPlan: FloorPlan): Promise<FloorPlan> {
@@ -54,6 +71,6 @@ Polymer({
   },
 
   _fetchSensorData() {
-    
+
   }
 });
