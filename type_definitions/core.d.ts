@@ -5,3 +5,7 @@ interface Window {
 interface HTMLLinkElement {
   async: string
 }
+
+interface Element {
+  children: HTMLCollection
+}

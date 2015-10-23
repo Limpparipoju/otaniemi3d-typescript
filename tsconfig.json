@@ -23,9 +23,9 @@
         "src/elements/heat-map/heat-map.ts",
         "src/elements/map-info-window/map-info-window.ts",
         "src/elements/omi-message/omi-message.ts",
+        "type_definitions/core.d.ts",
         "type_definitions/otaniemi3d.d.ts",
-        "type_definitions/tsd.d.ts",
-        "type_definitions/window.d.ts"
+        "type_definitions/tsd.d.ts"
     ],
     "exclude": []
 }

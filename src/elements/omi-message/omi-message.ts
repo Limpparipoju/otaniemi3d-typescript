@@ -34,7 +34,7 @@ Polymer({
 
   _parse(data: Document): OmiObject[] {
     console.log(data.querySelector('Objects'));
-    let root: any = data.querySelector('Objects');
+    let root = data.querySelector('Objects');
     let objects = root.children;
     let parsedObjects: OmiObject[] = [];
 
@@ -48,79 +48,96 @@ Polymer({
   },
 
   _parseObject(object: Element): OmiObject {
-    let id = object.querySelector('id');
+    let children = object.children;
     let type = object.getAttribute('type');
-    let description = object.querySelector('description');
-    let infoItemCollection = object.querySelectorAll('InfoItem');
-    let omiObjectCollection = object.querySelectorAll('Object');
+    let id;
+    let description;
+    let infoItems = [];
+    let omiObjects = [];
 
-    let infoItems: InfoItem[] = [].slice.call(infoItemCollection)
-      .map((infoItem) => {
-        return this._parseInfoItem(infoItem);
-      });
-    let omiObjects: OmiObject[] = [].slice.call(omiObjectCollection)
-      .map((omiObject) => {
-        return this._parseObject(omiObject);
-      });
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].nodeName === 'id') {
+        id = children[i];
+      } else if (children[i].nodeName === 'description') {
+        description = children[i];
+      } else if (children[i].nodeName === 'InfoItem') {
+        infoItems.push(children[i]);
+      } else if (children[i].nodeName === 'Object') {
+        omiObjects.push(children[i]);
+      }
+    }
 
     return {
       id: id ? id.textContent : null,
       type: type,
       description: description ? description.textContent : null,
-      infoItems: infoItems,
-      childObjects: omiObjects
+      infoItems: infoItems.map((item) => this._parseInfoItem(item)),
+      childObjects: omiObjects.map((object) => this._parseObject(object))
     };
   },
 
   _parseInfoItem(item: Element) {
+    let children = item.children;
     let name = item.getAttribute('name');
-    let description = item.querySelector('description');
-    let metaData = item.querySelector('MetaData');
-    let values = item.querySelectorAll('value');
+    let description;
+    let metaData;
+    let values = [];
+
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].nodeName === 'description') {
+        description = children[i];
+      } else if (children[i].nodeName === 'MetaData') {
+        metaData = children[i];
+      } else if (children[i].nodeName === 'value') {
+        values.push(children[i]);
+      }
+    }
 
     return {
       name: name,
       description: description ? description.textContent : null,
-      metaData: metaData ? this._parseMetaData(metaData): null,
-      values: values ? this._parseValues(values): null
+      metaData: metaData ? this._parseMetaData(metaData) : null,
+      values: values.map((value) => this._parseValue(value)),
     };
   },
 
   _parseMetaData(metaElem: Element) {
-    let infoItems = metaElem.querySelectorAll('InfoItem');
+    let children = metaElem.children;
+    let infoItems = [];
 
-    let metaData = [].slice.call(infoItems)
-      .map((infoItem) => {
-        let name = infoItem.getAttribute('name');
-        let value = infoItem.querySelector('value');
-        return [value, name];
-      });
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].nodeName === 'InfoItem') {
+        infoItems.push(children[i]);
+      }
+    }
+
+    let metaData = infoItems.map((data) => this._parseInfoItem(data));
 
     return metaData.reduce((previous, current) => {
-      previous[current[0]] = current[1];
+      if (current.values.length === 1) {
+        previous[current.name] = current.values[0].value;
+      } else if (current.values.length > 1) {
+        previous[current.name] = current.values;
+      }
       return previous;
     }, {});
   },
 
-  _parseValues(valueElems: NodeListOf<Element>) {
-    let values = [].slice.call(valueElems).map((value) => {
-      let dateTime = value.getAttribute('dateTime');
-      let unixTime = value.getAttribute('unixTime');
-      let time;
+  _parseValue(value: Element) {
+    let dateTime = value.getAttribute('dateTime');
+    let unixTime = value.getAttribute('unixTime');
+    let time;
 
-      if (dateTime) {
-        time = new Date (dateTime);
-      } else if (unixTime) {
-        time = new Date (unixTime * 1000);
-      }
+    if (dateTime) {
+      time = new Date (dateTime);
+    } else if (unixTime) {
+      time = new Date (Number(unixTime) * 1000);
+    }
 
-      return {
-        value: value.textContent,
-        time: time
-      }
-    });
-
-    return values;
+    return {
+      value: value.textContent,
+      time: time
+    };
   },
 
   _createOmiRequest(request: string, method: string, params: any = {}): string {
