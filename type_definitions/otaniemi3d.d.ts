@@ -13,7 +13,7 @@ interface InfoItem {
   name: string,
   metaData?: any,
   description?: string,
-  values: {value: number, time: Date}[]
+  values?: {value: number, time?: Date}[]
 }
 
 interface OmiObject {

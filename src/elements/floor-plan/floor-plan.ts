@@ -22,6 +22,9 @@ Polymer({
             <MetaData/>
           </InfoItem>
         </Object>
+        <Object>
+          <id>Room-101</id>
+        </Object>
       </Object>`
     );
   },
