@@ -26,8 +26,7 @@ interface OmiObject {
 
 interface Room {
   id: string,
-  name: string,
-  floor: number
+  name: string
 }
 
 interface Building {

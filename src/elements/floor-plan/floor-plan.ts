@@ -2,31 +2,22 @@ Polymer({
   is: 'floor-plan',
 
   properties: {
-    data: Object
+    data: {
+      type: Object,
+      value: () => {return {}}
+    },
+    buildingId: {
+      type: String,
+      value: ''
+    }
   },
 
+  observers: [
+    '_fetchSensorData(data, buildingId)'
+  ],
+
   ready() {
-    let request: any = document.createElement('omi-message');
-    request.send('read', `
-      <Object>
-        <id>K1</id>
-        <Object>
-          <id>Room-147a</id>
-          <InfoItem name="00:0F:C9:0D:11:34">
-            <MetaData/>
-          </InfoItem>
-          <InfoItem name="light">
-            <MetaData/>
-          </InfoItem>
-          <InfoItem name="00:0F:C9:0D:21:42">
-            <MetaData/>
-          </InfoItem>
-        </Object>
-        <Object>
-          <id>Room-101</id>
-        </Object>
-      </Object>`
-    );
+
   },
 
   _getFloorPlan(floorPlan: FloorPlan): Promise<FloorPlan> {
@@ -74,6 +65,19 @@ Polymer({
   },
 
   _fetchSensorData() {
+    let request: any = document.createElement('omi-message');
+    let rooms = this.data.rooms.map((room) => {
+      return `
+        <Object>
+          <id>${room.id}</id>
+        </Object>`;
+    });
 
+    request.send('read', `
+      <Object>
+        <id>${this.buildingId}</id>
+        ${rooms.join('\n')}
+      </Object>`
+    );
   }
 });
