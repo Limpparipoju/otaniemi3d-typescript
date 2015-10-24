@@ -32,7 +32,6 @@ Polymer({
   },
 
   _appendFloorPlan(floorPlan: FloorPlan): FloorPlan {
-    floorPlan.rooms = [];
     floorPlan.sensorData = [];
     floorPlan.translate = [0,0];
     floorPlan.scale = 1;
@@ -58,20 +57,63 @@ Polymer({
     return floorPlan;
   },
 
-  _fetchSensorData() {
+  _fetchSensorData(floorPlan: FloorPlan): Promise<FloorPlan> {
     let request: any = document.createElement('omi-message');
-    let rooms = this.data.rooms.map((room) => {
+    let rooms = floorPlan.rooms.map((room) => {
       return `
         <Object>
           <id>${room.id}</id>
         </Object>`;
     });
 
-    request.send('read', `
+    return request.send('read', `
       <Object>
         <id>${this.building}</id>
         ${rooms.join('\n')}
       </Object>`
-    );
+    ).then((data) => {
+      floorPlan.sensorData = data[0].childObjects;
+      return floorPlan;
+    });
+  },
+
+  _bindSensorsToRooms(floorPlan: FloorPlan): FloorPlan {
+    d3.select(floorPlan.svg)
+      .select('svg')
+      .selectAll('[data-room-id]')
+      .datum(function() {
+        let datum = d3.select(this).datum();
+
+        if (datum) {
+          return datum;
+        }
+
+        let id = d3.select(this).attr('data-room-id');
+        let room = floorPlan.sensorData.filter((object) => object.id === id);
+
+        if (room.length) {
+          return room[0];
+        } else {
+          return {
+            id: id,
+            infoItems: [],
+            childObjects: []
+          };
+        }
+      });
+
+    return floorPlan;
+  },
+
+  _updateRoomColors(floorPlan: FloorPlan) {
+    d3.select(floorPlan.svg)
+      .select('svg')
+      .selectAll('[data-room-id]')
+      .style((datum) => {
+        
+      })
+      .style((datum) => {
+
+      });
   }
 });

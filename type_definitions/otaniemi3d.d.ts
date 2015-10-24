@@ -3,7 +3,7 @@ interface FloorPlan {
   name: string,
   floor: number,
   svg?: Element,
-  sensorData?: Sensor[],
+  sensorData?: OmiObject[],
   translate?: [number, number],
   scale?: number,
   rooms: Room[]
