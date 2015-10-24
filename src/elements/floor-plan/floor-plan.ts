@@ -2,18 +2,12 @@ Polymer({
   is: 'floor-plan',
 
   properties: {
-    data: {
-      type: Object,
-      value: () => {return {}}
-    },
-    buildingId: {
-      type: String,
-      value: ''
-    }
+    data: Object,
+    building: String
   },
 
   observers: [
-    '_fetchSensorData(data, buildingId)'
+    '_fetchSensorData(data, building)'
   ],
 
   ready() {
@@ -75,7 +69,7 @@ Polymer({
 
     request.send('read', `
       <Object>
-        <id>${this.buildingId}</id>
+        <id>${this.building}</id>
         ${rooms.join('\n')}
       </Object>`
     );
