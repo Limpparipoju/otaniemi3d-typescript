@@ -109,11 +109,15 @@ Polymer({
     d3.select(floorPlan.svg)
       .select('svg')
       .selectAll('[data-room-id]')
-      .style((datum) => {
-        
+      .style('fill', (datum: OmiObject) => {
+        let sensor = datum.infoItems[0];
+        return this.$.utilities
+          .computeColor(sensor.name, sensor.values[0].value);
       })
-      .style((datum) => {
-
+      .style('fill-opacity', (datum) => {
+        let sensor = datum.infoItems[0];
+        return this.$.utilities
+          .computeOpacity(sensor.name, sensor.values[0].value);
       });
   }
 });
