@@ -33,7 +33,6 @@ Polymer({
   },
 
   _parse(data: Document): OmiObject[] {
-    console.log(data.querySelector('Objects'));
     let root = data.querySelector('Objects');
     let objects = root.children;
     let parsedObjects: OmiObject[] = [];
@@ -41,8 +40,6 @@ Polymer({
     for (let i = 0; i < objects.length; i++) {
       parsedObjects.push(this._parseObject(objects[i]));
     }
-
-    console.log(parsedObjects);
 
     return parsedObjects;
   },

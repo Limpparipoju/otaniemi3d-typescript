@@ -29,7 +29,7 @@ Polymer({
   _opacityStart: 0.3,
   _opacityEnd: 1.0,
 
-  computeColor(sensorName, value) {
+  computeColor(sensorName: string, value: number): string {
     let percentage = this._getPercentage(sensorName, value);
     if (percentage === null) {
       return null;
@@ -44,7 +44,7 @@ Polymer({
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
   },
 
-  computeOpacity(sensorName, value) {
+  computeOpacity(sensorName: string, value: number): number {
     let percentage = this._getPercentage(sensorName, value);
     if (percentage === null) {
       return null;
@@ -56,7 +56,10 @@ Polymer({
     return opacity;
   },
 
-  _getPercentage(sensorName, value) {
+  _getPercentage(sensorName: string, value: number): number {
+    if (!sensorName || !value) {
+      return null;
+    }
     let sensor = this._sensorTypes[sensorName.toLowerCase()];
     if (!sensor) {
       return null;

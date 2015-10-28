@@ -7,11 +7,16 @@ Polymer({
   },
 
   observers: [
-    '_fetchSensorData(data, building)'
+    '_init(data, building)'
   ],
 
-  ready() {
-
+  _init(data: FloorPlan, building: string): void {
+    this._getFloorPlan(data)
+    .then(this._appendFloorPlan.bind(this))
+    .then(this._fetchSensorData.bind(this))
+    .then(this._bindSensorsToRooms.bind(this))
+    .then(this._updateRoomColors.bind(this))
+    .catch((error) => console.log(error));
   },
 
   _getFloorPlan(floorPlan: FloorPlan): Promise<FloorPlan> {
@@ -36,8 +41,9 @@ Polymer({
     floorPlan.translate = [0,0];
     floorPlan.scale = 1;
 
-    let svg = d3.select(floorPlan.svg)
-      .select('svg');
+    let svg = d3.select(floorPlan.svg);
+
+    Polymer.dom(this.root).appendChild(svg.node());
 
     //Configure dragging and zooming behavior.
     let zoomListener = d3.behavior.zoom()
@@ -74,12 +80,13 @@ Polymer({
     ).then((data) => {
       floorPlan.sensorData = data[0].childObjects;
       return floorPlan;
+    }, (error) => {
+      console.log(error);
     });
   },
 
   _bindSensorsToRooms(floorPlan: FloorPlan): FloorPlan {
     d3.select(floorPlan.svg)
-      .select('svg')
       .selectAll('[data-room-id]')
       .datum(function() {
         let datum = d3.select(this).datum();
@@ -105,19 +112,26 @@ Polymer({
     return floorPlan;
   },
 
-  _updateRoomColors(floorPlan: FloorPlan) {
+  _updateRoomColors(floorPlan: FloorPlan): void {
     d3.select(floorPlan.svg)
-      .select('svg')
       .selectAll('[data-room-id]')
       .style('fill', (datum: OmiObject) => {
         let sensor = datum.infoItems[0];
-        return this.$.utilities
-          .computeColor(sensor.name, sensor.values[0].value);
+        if (sensor) {
+          return this.$.utilities
+            .computeColor(sensor.name, sensor.values[0].value);
+        } else {
+          return null;
+        }
       })
       .style('fill-opacity', (datum) => {
         let sensor = datum.infoItems[0];
-        return this.$.utilities
-          .computeOpacity(sensor.name, sensor.values[0].value);
+        if (sensor) {
+          return this.$.utilities
+            .computeOpacity(sensor.name, sensor.values[0].value);
+        } else {
+          return null;
+        }
       });
   }
 });
