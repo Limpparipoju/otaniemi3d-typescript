@@ -16,7 +16,7 @@ Polymer({
     .then(this._fetchSensorData.bind(this))
     .then(this._bindSensorsToRooms.bind(this))
     .then(this._updateRoomColors.bind(this))
-    .catch((error) => console.log(error));
+    .catch((error) => console.log('Error:', error));
   },
 
   _getFloorPlan(floorPlan: FloorPlan): Promise<FloorPlan> {
@@ -41,7 +41,7 @@ Polymer({
     floorPlan.translate = [0,0];
     floorPlan.scale = 1;
 
-    let svg = d3.select(floorPlan.svg);
+    let svg: any = d3.select(floorPlan.svg);
 
     Polymer.dom(this.root).appendChild(svg.node());
 
@@ -80,8 +80,6 @@ Polymer({
     ).then((data) => {
       floorPlan.sensorData = data[0].childObjects;
       return floorPlan;
-    }, (error) => {
-      console.log(error);
     });
   },
 
