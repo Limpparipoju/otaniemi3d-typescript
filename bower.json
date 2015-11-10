@@ -2,7 +2,7 @@
   "name": "Otaniemi3D",
   "private": true,
   "dependencies": {
-    "polymer": "~1.1.1",
+    "polymer": "~1.2.0",
     "iron-elements": "PolymerElements/iron-elements#~1.0.3",
     "paper-elements": "PolymerElements/paper-elements#~1.0.5",
     "app-router": "~2.6.1",
