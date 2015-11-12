@@ -13,7 +13,8 @@ Polymer({
       body: this._createOmiRequest(request, method, params),
       handleAs: 'xml',
       headers: {
-        'Content-Type': 'text/xml'
+        'Content-Type': 'text/xml',
+        'Accept': 'text/xml'
       }
     };
 
