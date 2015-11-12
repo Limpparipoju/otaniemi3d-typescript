@@ -94,17 +94,13 @@ Polymer({
         }
 
         let id = d3.select(this).attr('data-room-id');
-        let room = floorPlan.sensorData.filter((object) => object.id === id);
+        let room = floorPlan.sensorData.find((object) => object.id === id);
 
-        if (room.length) {
-          return room[0];
-        } else {
-          return {
-            id: id,
-            infoItems: [],
-            childObjects: []
-          };
-        }
+        return room ? room : {
+          id: id,
+          infoItems: [],
+          childObjects: []
+        };
       });
 
     return floorPlan;
