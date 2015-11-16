@@ -13,3 +13,11 @@ interface Element {
 interface Array<T> {
   find(callbackfn: (element: T, index: number, array: T[]) => boolean, thisArg?: any): T;
 }
+
+interface JQuery {
+  jstree(any?): any;
+}
+
+interface OmiMessageElement extends HTMLElement {
+  send(method: string, request: string, params?: any): Promise<OdfObject[]>;
+}

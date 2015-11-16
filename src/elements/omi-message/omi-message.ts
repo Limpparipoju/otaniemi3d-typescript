@@ -4,7 +4,7 @@ Polymer({
   properties: {
   },
 
-  send(method: string, request: string, params?: any): Promise<OmiObject[]> {
+  send(method: string, request: string, params?: any): Promise<OdfObject[]> {
     let ironRequest: any = document.createElement('iron-request');
 
     let requestOptions = {
@@ -33,10 +33,10 @@ Polymer({
     });
   },
 
-  _parse(data: Document): OmiObject[] {
+  _parse(data: Document): OdfObject[] {
     let root = data.querySelector('Objects');
     let objects = root.children;
-    let parsedObjects: OmiObject[] = [];
+    let parsedObjects: OdfObject[] = [];
 
     for (let i = 0; i < objects.length; i++) {
       parsedObjects.push(this._parseObject(objects[i]));
@@ -45,13 +45,13 @@ Polymer({
     return parsedObjects;
   },
 
-  _parseObject(object: Element): OmiObject {
+  _parseObject(object: Element): OdfObject {
     let children = object.children;
     let type = object.getAttribute('type');
     let id;
     let description;
     let infoItems = [];
-    let omiObjects = [];
+    let odfObjects = [];
 
     for (let i = 0; i < children.length; i++) {
       if (children[i].nodeName === 'id') {
@@ -61,7 +61,7 @@ Polymer({
       } else if (children[i].nodeName === 'InfoItem') {
         infoItems.push(children[i]);
       } else if (children[i].nodeName === 'Object') {
-        omiObjects.push(children[i]);
+        odfObjects.push(children[i]);
       }
     }
 
@@ -70,7 +70,7 @@ Polymer({
       type: type,
       description: description ? description.textContent : null,
       infoItems: infoItems.map((item) => this._parseInfoItem(item)),
-      childObjects: omiObjects.map((object) => this._parseObject(object))
+      childObjects: odfObjects.map((object) => this._parseObject(object))
     };
   },
 

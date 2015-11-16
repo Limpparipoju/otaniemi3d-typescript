@@ -3,7 +3,7 @@ interface FloorPlan {
   name: string,
   floor: number,
   svg?: Element,
-  sensorData?: OmiObject[],
+  sensorData?: OdfObject[],
   translate?: [number, number],
   scale?: number,
   rooms: Room[]
@@ -16,12 +16,12 @@ interface InfoItem {
   values?: {value: number, time?: Date}[]
 }
 
-interface OmiObject {
+interface OdfObject {
   id: string,
   type?: string,
   description?: string,
   infoItems: InfoItem[],
-  childObjects: OmiObject[]
+  childObjects: OdfObject[]
 }
 
 interface Room {
@@ -38,8 +38,18 @@ interface Building {
   floorPlans: FloorPlan[],
 }
 
-interface Sensor extends InfoItem {
-  id: string,
-  room: Room,
-  suffix: string
+interface OdfTreeNode {
+  id?: string,
+  text: string,
+  children: Array<string|OdfTreeNode>|boolean,
+  object?: OdfObject|InfoItem,
+  orginal?: any,
+  icon?: string,
+  state?: {
+    opened: boolean,
+    disabled: boolean,
+    selected: boolean
+  },
+  li_attr?: any,
+  a_attr?: any
 }

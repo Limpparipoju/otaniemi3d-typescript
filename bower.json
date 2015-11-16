@@ -12,7 +12,9 @@
     "google-streetview-pano": "GoogleWebComponents/google-streetview-pano#~1.0.3",
     "google-apis": "GoogleWebComponents/google-apis#~1.1.1",
     "d3": "~3.5.6",
-    "es6-promise": "~3.0.2"
+    "es6-promise": "~3.0.2",
+    "highcharts": "~4.1.9",
+    "jstree": "~3.2.1"
   },
   "resolutions": {
     "polymer": "^1.2.0"

@@ -64,7 +64,7 @@ Polymer({
   },
 
   _fetchSensorData(floorPlan: FloorPlan): Promise<FloorPlan> {
-    let request: any = document.createElement('omi-message');
+    let request = <OmiMessageElement>document.createElement('omi-message');
     let rooms = floorPlan.rooms.map((room) => {
       return `
         <Object>
@@ -109,7 +109,7 @@ Polymer({
   _updateRoomColors(floorPlan: FloorPlan): void {
     d3.select(floorPlan.svg)
       .selectAll('[data-room-id]')
-      .style('fill', (datum: OmiObject) => {
+      .style('fill', (datum: OdfObject) => {
         let sensor = datum.infoItems[0];
         if (sensor) {
           return this.$.utilities
