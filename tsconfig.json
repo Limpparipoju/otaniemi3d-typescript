@@ -20,14 +20,18 @@
         "src/app.ts",
         "src/elements/app-layout/app-layout.ts",
         "src/elements/building-selector/building-selector.ts",
+        "src/elements/data-analytics/data-analytics.ts",
         "src/elements/floor-plan/floor-plan.ts",
         "src/elements/heat-map/heat-map.ts",
         "src/elements/map-info-window/map-info-window.ts",
+        "src/elements/odf-tree/odf-tree.ts",
         "src/elements/omi-message/omi-message.ts",
         "src/elements/sensor-utilities/sensor-utilities.ts",
         "src/type_definitions/core.d.ts",
-        "src/type_definitions/otaniemi.d.ts",
-        "typings/tsd.d.ts"
+        "src/type_definitions/otaniemi.d.ts"
     ],
-    "exclude": []
+    "exclude": [],
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }
